@@ -37,7 +37,24 @@
 			<stacked-pane id="SP_LoggedIn" value="true">
 				<layout-row id="RowLayout8">
 					<layout-column id="ColumnLayout1" style="align-items: stretch">
-						<davinci-drop-down id="DD_Timezone" label="Timezone:"
+						<davinci-collapse id="Collapse_TimezoneInfo"
+							collapsed-title="Timezone info" expanded-title="Hide">
+							<layout-row id="RowLayout12">
+								<layout-column id="ColumnLayout25" style="align-items: stretch">
+									<davinci-callout id="Callout_ETC_Timezone" type="info">
+										<span>
+											Be aware of the fact that 'Etc/GMT...' timezones are intentionally inverted.
+										</span>
+									</davinci-callout>
+									<davinci-callout id="Callout_NTP" type="info">
+										<span>
+											Set timezone before getting time from NTP server.
+										</span>
+									</davinci-callout>
+								</layout-column>
+							</layout-row>
+						</davinci-collapse>
+						<davinci-drop-down id="DD_Timezone" label="Select timezone:"
 							title="Set the timezone">
 							<crown-edpws-binding property="data"
 								name="CSK_DateTime/OnNewTimezoneList" update-on-resume
@@ -50,8 +67,23 @@
 								path="param/args/zone" auto-commit>
 							</crown-binding>
 						</davinci-drop-down>
+						<davinci-text-field id="TF_CustomTimezone" type="text"
+							label="Custom timezone:">
+							<crown-edpws-binding property="value"
+								name="CSK_DateTime/OnNewStatusTimezone" update-on-resume>
+							</crown-edpws-binding>
+							<crown-binding event="change"
+								name="CSK_DateTime/setCustomTimezoneViaUI" path="param/args/zone"
+								auto-commit>
+							</crown-binding>
+						</davinci-text-field>
+						<davinci-value-display id="VD_TimezoneInfo">
+							<crown-edpws-binding property="value"
+								name="CSK_DateTime/OnNewStatusTimezoneInfo" update-on-resume>
+							</crown-edpws-binding>
+						</davinci-value-display>
 						<davinci-value-display id="VD_NTPSetting" value=""
-							label="NTP Setting:">
+							label="NTP setting:">
 						</davinci-value-display>
 						<layout-row id="RowLayout7" class="myCustomFrame_CSK_Module_DateTime"
 							style="align-items: center">
@@ -187,7 +219,7 @@
 								</layout-row>
 							</layout-column>
 						</layout-row>
-						<davinci-value-display id="VD_ManualSetting" label="Manual setings:">
+						<davinci-value-display id="VD_ManualSetting" label="Manual setting:">
 						</davinci-value-display>
 						<layout-row id="RowLayout9" class="myCustomFrame_CSK_Module_DateTime">
 							<layout-column id="ColumnLayout15" style="align-items: stretch">

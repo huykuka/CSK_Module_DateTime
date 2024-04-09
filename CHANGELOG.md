@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Release 3.1.0
+
+### New features
+- Set custom timezone in UI
+
 ## Release 3.0.0
 
 ### Improvements

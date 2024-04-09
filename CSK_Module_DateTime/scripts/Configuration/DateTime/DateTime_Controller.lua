@@ -46,6 +46,7 @@ Script.serveEvent('CSK_DateTime.OnNewStatusNTPTimeout', 'DateTime_OnNewStatusNTP
 Script.serveEvent('CSK_DateTime.OnNewStatusSystemTimeSource', 'DateTime_OnNewStatusSystemTimeSource')
 
 Script.serveEvent('CSK_DateTime.OnNewStatusIsTimeSet', 'DateTime_OnNewStatusIsTimeSet')
+Script.serveEvent('CSK_DateTime.OnNewStatusTimezoneInfo', 'DateTime_OnNewStatusTimezoneInfo')
 
 Script.serveEvent("CSK_DateTime.OnNewStatusLoadParameterOnReboot", "DateTime_OnNewStatusLoadParameterOnReboot")
 Script.serveEvent("CSK_DateTime.OnPersistentDataModuleAvailable", "DateTime_OnPersistentDataModuleAvailable")
@@ -227,19 +228,40 @@ local function setTimezone(zone)
   if dateTime_Model.setupActive then
     local suc = DateTime.setTimeZone(zone)
     if suc then
-      _G.logger:info(nameOfModule .. ": Set new timezone = " .. zone)
+      local exists = false
+      for key, value in pairs(dateTime_Model.timezoneList) do
+        if value == zone then
+          exists = true
+        end
+      end
+      if exists == false then
+        table.insert(dateTime_Model.timezoneList, zone)
+      end
+      dateTime_Model.timezoneJsonList = dateTime_Model.helperFuncs.createStringList(dateTime_Model.timezoneList)
+
+      _G.logger:info(nameOfModule .. ": New timezone active = " .. zone)
       dateTime_Model.parameters.timezone = zone
+      Script.notifyEvent("DateTime_OnNewStatusTimezoneInfo", 'INFO: New timezone active: ' .. tostring(zone))
     else
       _G.logger:warning(nameOfModule .. ": Was not able to set new timezone. ")
+      local currentZone = DateTime.getTimeZone()
+      Script.notifyEvent("DateTime_OnNewStatusTimezoneInfo", 'INFO: Not able to set new timezone: "' .. tostring(zone) .. '". Will continue to use "' .. tostring(currentZone) .. '".')
     end
     tmrDateTime:start()
     return suc
   else
     _G.logger:warning(nameOfModule .. ": Setting timezone on SAE / Emulator not possible.")
+    Script.notifyEvent("DateTime_OnNewStatusTimezoneInfo", 'INFO: Setting timezone on SAE / Emulator not possible.')
+    tmrDateTime:start()
     return false
   end
 end
 Script.serveFunction('CSK_DateTime.setTimezone', setTimezone)
+
+local function setCustomTimezoneViaUI(zone)
+  setTimezone(zone)
+end
+Script.serveFunction('CSK_DateTime.setCustomTimezoneViaUI', setCustomTimezoneViaUI)
 
 local function manualNTPRequest()
   if dateTime_Model.parameters.systemTimeSource == 'NTP' then
