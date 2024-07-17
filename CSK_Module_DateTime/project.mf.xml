@@ -224,7 +224,7 @@ If set to false the NTP time is just printed to the log.</desc>
             </serves>
         </crown>
         <meta key="author">SICK AG</meta>
-        <meta key="version">3.1.0</meta>
+        <meta key="version">3.1.1</meta>
         <meta key="priority">low</meta>
         <meta key="copy-protected">false</meta>
         <meta key="read-protected">false</meta>

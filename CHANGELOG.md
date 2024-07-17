@@ -1,6 +1,11 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## Release 3.1.1
+
+### Bugfix
+- NTP server IP input field not readable in UI on SID
+
 ## Release 3.1.0
 
 ### New features
@@ -34,7 +39,6 @@ All notable changes to this project will be documented in this file.
 
 ### Bugfix
 - UI events notified after pageLoad after 300ms instead of 100ms to not miss
-
 
 ## Release 2.4.0
 

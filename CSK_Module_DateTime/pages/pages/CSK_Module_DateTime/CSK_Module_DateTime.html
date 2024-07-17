@@ -82,85 +82,30 @@
 								name="CSK_DateTime/OnNewStatusTimezoneInfo" update-on-resume>
 							</crown-edpws-binding>
 						</davinci-value-display>
-						<davinci-value-display id="VD_NTPSetting" value=""
-							label="NTP setting:">
-						</davinci-value-display>
+						<davinci-drop-down id="DD_SourceSystemTime"
+							title="Set time source for system time" label="Time source:">
+							<davinci-option id="Option1" value="NTP">
+								<span>NTP</span>
+							</davinci-option>
+							<davinci-option id="Option2" value="MANUAL">
+								<span>MANUAL</span>
+							</davinci-option>
+							<crown-edpws-binding property="value"
+								name="CSK_DateTime/OnNewStatusSystemTimeSource" update-on-resume>
+							</crown-edpws-binding>
+							<crown-binding event="change" name="CSK_DateTime/setSystemTimeSource"
+								path="param/args/source" auto-commit>
+							</crown-binding>
+						</davinci-drop-down>
 						<layout-row id="RowLayout7" class="myCustomFrame_CSK_Module_DateTime"
 							style="align-items: center">
 							<layout-column id="ColumnLayout16" style="align-items: stretch">
-								<layout-row id="RowLayout11" style="align-items: stretch">
-									<layout-column id="ColumnLayout14" style="align-items: stretch">
-										<davinci-value-display id="VD_SourceSystemTime"
-											value="Source of system time:"
-											title="Set time source for system time">
-										</davinci-value-display>
-										<davinci-drop-down id="DD_SourceSystemTime"
-											title="Set time source for system time">
-											<davinci-option id="Option1" value="NTP">
-												<span>NTP</span>
-											</davinci-option>
-											<davinci-option id="Option2" value="MANUAL">
-												<span>MANUAL</span>
-											</davinci-option>
-											<crown-edpws-binding property="value"
-												name="CSK_DateTime/OnNewStatusSystemTimeSource" update-on-resume>
-											</crown-edpws-binding>
-											<crown-binding event="change" name="CSK_DateTime/setSystemTimeSource"
-												path="param/args/source" auto-commit>
-											</crown-binding>
-										</davinci-drop-down>
-									</layout-column>
-									<layout-column id="ColumnLayout17" style="align-items: stretch">
-										<davinci-value-display id="VD_ApplySystemTime"
-											value="Apply to system time:"
-											title="Set if the timestamp received by NTP should be applied to the system time. + If set to false the NTP time is just printed to the log.">
-										</davinci-value-display>
-										<davinci-checkbox id="CB_ApplySystemTime"
-											title="Set if the timestamp received by NTP should be applied to the system time. + If set to false the NTP time is just printed to the log.">
-											<span></span>
-											<crown-edpws-binding property="checked"
-												name="CSK_DateTime/OnNewStatusNTPApplyEnabled" update-on-resume>
-											</crown-edpws-binding>
-											<crown-binding event="change" name="CSK_DateTime/setNTPApplyEnabled"
-												path="param/args/status" auto-commit>
-											</crown-binding>
-										</davinci-checkbox>
-									</layout-column>
-									<layout-column id="ColumnLayout19" style="align-items: stretch">
-										<davinci-value-display id="VD_PeriodicUpdate" value="Periodic update:"
-											title="Set periodic update of NTP">
-										</davinci-value-display>
-										<davinci-checkbox id="CB_PeriodicUpdate"
-											title="Set periodic update of NTP">
-											<span></span>
-											<crown-edpws-binding property="checked"
-												name="CSK_DateTime/OnNewStatusNTPPeriodicUpdateEnabled"
-												update-on-resume>
-											</crown-edpws-binding>
-											<crown-binding event="change" name="CSK_DateTime/setNTPPeriodicUpdate"
-												path="param/args/status" auto-commit>
-											</crown-binding>
-										</davinci-checkbox>
-									</layout-column>
-									<layout-column id="ColumnLayout21" style="align-items: stretch">
-										<davinci-value-display id="VD_Timeout" value="Timeout:"
-											title="Set the NTP timeout">
-										</davinci-value-display>
-										<davinci-numeric-field id="NF_Timeout" type="outline" min="1"
-											max="60000" ticks="1" group-separator="," decimal-separator="."
-											format-pattern="0" title="Set the NTP timeout">
-											<crown-edpws-binding property="value"
-												name="CSK_DateTime/OnNewStatusNTPTimeout" update-on-resume>
-											</crown-edpws-binding>
-											<crown-binding event="change" name="CSK_DateTime/setNTPTimeout"
-												path="param/args/timeout" auto-commit>
-											</crown-binding>
-										</davinci-numeric-field>
-									</layout-column>
-								</layout-row>
+								<davinci-value-display id="VD_NTPSetting" value=""
+									label="NTP setting:">
+								</davinci-value-display>
 								<layout-row id="RowLayout10" style="align-items: stretch">
 									<layout-column id="ColumnLayout12" style="align-items: stretch">
-										<davinci-value-display id="VD_NTPServerIP" value="NTP Server IP:">
+										<davinci-value-display id="VD_NTPServerIP" value="Server IP:">
 										</davinci-value-display>
 										<davinci-text-field id="TF_NTPServerIP" type="text">
 											<crown-binding event="change" name="CSK_DateTime/setNTPServerIP"
@@ -172,7 +117,7 @@
 										</davinci-text-field>
 									</layout-column>
 									<layout-column id="ColumnLayout13" style="align-items: stretch">
-										<davinci-value-display id="VD_NTPServerPort" value="NTP Port:">
+										<davinci-value-display id="VD_NTPServerPort" value="Port:">
 										</davinci-value-display>
 										<davinci-numeric-field id="NF_NTPServerPort" type="outline" min="1"
 											max="99999" ticks="1" group-separator="," decimal-separator="."
@@ -186,7 +131,7 @@
 										</davinci-numeric-field>
 									</layout-column>
 									<layout-column id="ColumnLayout20" style="align-items: stretch">
-										<davinci-value-display id="VD_NTPInterface" value="NTP Interface:"
+										<davinci-value-display id="VD_NTPInterface" value="Interface:"
 											title="Set interface for NTP">
 										</davinci-value-display>
 										<davinci-drop-down id="DD_NTPInterface" title="Set interface for NTP">
@@ -202,21 +147,79 @@
 											</crown-binding>
 										</davinci-drop-down>
 									</layout-column>
-									<layout-column id="ColumnLayout18"
-										style="align-items: stretch; justify-content: flex-end">
-										<davinci-button id="B_TriggerNTPRequest" type="primary"
-											icon-position="append">
-											<span>Trigger NTP Request</span>
-											<crown-binding event="submit" name="CSK_DateTime/manualNTPRequest"
-												auto-commit>
-											</crown-binding>
-											<crown-edpws-binding property="disabled"
-												name="CSK_DateTime/OnNewStatusNTPActive" update-on-resume
-												converter="function(value) {return !value;}">
-											</crown-edpws-binding>
-										</davinci-button>
+								</layout-row>
+								<layout-row id="RowLayout11" style="align-items: stretch">
+									<layout-column id="ColumnLayout21" style="align-items: stretch">
+										<davinci-value-display id="VD_Timeout" value="Timeout:"
+											title="Set the NTP timeout">
+										</davinci-value-display>
+									</layout-column>
+									<layout-column id="ColumnLayout17" style="align-items: stretch">
+										<davinci-value-display id="VD_ApplySystemTime"
+											value="Apply to system time:"
+											title="Set if the timestamp received by NTP should be applied to the system time. + If set to false the NTP time is just printed to the log.">
+										</davinci-value-display>
+									</layout-column>
+									<layout-column id="ColumnLayout19" style="align-items: stretch">
+										<davinci-value-display id="VD_PeriodicUpdate" value="Periodic update:"
+											title="Set periodic update of NTP">
+										</davinci-value-display>
 									</layout-column>
 								</layout-row>
+								<layout-row id="RowLayout13" style="align-items: center">
+									<layout-column id="ColumnLayout14" style="align-items: stretch">
+										<davinci-numeric-field id="NF_Timeout" type="outline" min="1"
+											max="60000" ticks="1" group-separator="," decimal-separator="."
+											format-pattern="0" title="Set the NTP timeout">
+											<crown-edpws-binding property="value"
+												name="CSK_DateTime/OnNewStatusNTPTimeout" update-on-resume>
+											</crown-edpws-binding>
+											<crown-binding event="change" name="CSK_DateTime/setNTPTimeout"
+												path="param/args/timeout" auto-commit>
+											</crown-binding>
+										</davinci-numeric-field>
+									</layout-column>
+									<layout-column id="ColumnLayout26" style="align-items: stretch">
+										<layout-row id="RowLayout14" style="justify-content: center">
+											<davinci-checkbox id="CB_ApplySystemTime"
+												title="Set if the timestamp received by NTP should be applied to the system time. + If set to false the NTP time is just printed to the log.">
+												<span></span>
+												<crown-edpws-binding property="checked"
+													name="CSK_DateTime/OnNewStatusNTPApplyEnabled" update-on-resume>
+												</crown-edpws-binding>
+												<crown-binding event="change" name="CSK_DateTime/setNTPApplyEnabled"
+													path="param/args/status" auto-commit>
+												</crown-binding>
+											</davinci-checkbox>
+										</layout-row>
+									</layout-column>
+									<layout-column id="ColumnLayout18" style="align-items: stretch">
+										<layout-row id="RowLayout15" style="justify-content: center">
+											<davinci-checkbox id="CB_PeriodicUpdate"
+												title="Set periodic update of NTP">
+												<span></span>
+												<crown-edpws-binding property="checked"
+													name="CSK_DateTime/OnNewStatusNTPPeriodicUpdateEnabled"
+													update-on-resume>
+												</crown-edpws-binding>
+												<crown-binding event="change" name="CSK_DateTime/setNTPPeriodicUpdate"
+													path="param/args/status" auto-commit>
+												</crown-binding>
+											</davinci-checkbox>
+										</layout-row>
+									</layout-column>
+								</layout-row>
+								<davinci-button id="B_TriggerNTPRequest" type="primary"
+									icon-position="append">
+									<span>Trigger NTP Request</span>
+									<crown-binding event="submit" name="CSK_DateTime/manualNTPRequest"
+										auto-commit>
+									</crown-binding>
+									<crown-edpws-binding property="disabled"
+										name="CSK_DateTime/OnNewStatusNTPActive" update-on-resume
+										converter="function(value) {return !value;}">
+									</crown-edpws-binding>
+								</davinci-button>
 							</layout-column>
 						</layout-row>
 						<davinci-value-display id="VD_ManualSetting" label="Manual setting:">
