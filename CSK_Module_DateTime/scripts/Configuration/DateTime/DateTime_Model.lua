@@ -73,6 +73,9 @@ end
 dateTime_Model.interfaces = Engine.getEnumValues("EthernetInterfaces") -- Available interfaces of device running the app
 dateTime_Model.interfaceList = dateTime_Model.helperFuncs.createStringList(dateTime_Model.interfaces)
 
+dateTime_Model.styleForUI = 'None' -- Optional parameter to set UI style
+dateTime_Model.version = Engine.getCurrentAppVersion() -- Version of module
+
 -- Parameters to be saved permanently if wanted
 dateTime_Model.parameters = {}
 
@@ -91,6 +94,14 @@ dateTime_Model.parameters.systemTimeSource = 'MANUAL'  -- time source for system
 --**************************************************************************
 --**********************Start Function Scope *******************************
 --**************************************************************************
+
+--- Function to react on UI style change
+local function handleOnStyleChanged(theme)
+  dateTime_Model.styleForUI = theme
+  Script.notifyEvent("DateTime_OnNewStatusCSKStyle", dateTime_Model.styleForUI)
+end
+Script.register('CSK_PersistentData.OnNewStatusCSKStyle', handleOnStyleChanged)
+
 --*************************************************************************
 --********************** End Function Scope *******************************
 --*************************************************************************

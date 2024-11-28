@@ -20,6 +20,11 @@ local dateTime_Model
 
 -- ************************ UI Events Start ********************************
 
+Script.serveEvent('CSK_DateTime.OnNewStatusCSKStyle', 'DateTime_OnNewStatusCSKStyle')
+Script.serveEvent('CSK_DateTime.OnNewStatusModuleVersion', 'DateTime_OnNewStatusModuleVersion')
+Script.serveEvent('CSK_DateTime.OnNewStatusModuleIsActive', 'DateTime_OnNewStatusModuleIsActive')
+Script.serveEvent('CSK_DateTime.OnNewStatusNTPIsAvailable', 'DateTime_OnNewStatusNTPIsAvailable')
+
 Script.serveEvent("CSK_DateTime.OnNewLocalTime", "DateTime_OnNewLocalTime")
 Script.serveEvent("CSK_DateTime.OnNewUTCTime", "DateTime_OnNewUTCTime")
 Script.serveEvent("CSK_DateTime.OnNewDateTime", "DateTime_OnNewDateTime")
@@ -123,6 +128,11 @@ end
 --- Function to send all relevant values to UI on resume
 local function handleOnExpiredTmrDateTime()
 
+  Script.notifyEvent("DateTime_OnNewStatusModuleVersion", 'v' .. dateTime_Model.version)
+  Script.notifyEvent("DateTime_OnNewStatusCSKStyle", dateTime_Model.styleForUI)
+  Script.notifyEvent("DateTime_OnNewStatusModuleIsActive", _G.availableAPIs.default)
+  Script.notifyEvent("DateTime_OnNewStatusNTPIsAvailable", _G.availableAPIs.specific)
+
   updateUserLevel()
 
   local localDay, localMonth, localYear, localHour, localMin, localSec = DateTime.getDateTimeValuesLocal()
@@ -135,10 +145,9 @@ local function handleOnExpiredTmrDateTime()
   local currentUtcTime = string.format( "%04u-%02u-%02uT%02u:%02u:%02u",
                                 utcYear, utcMonth, utcDay, utcHour, utcMin, utcSec)
 
-
-  Script.notifyEvent("DateTime_OnNewLocalTime", "DateTimeValuesLocal = " .. currentLocalTime)
-  Script.notifyEvent("DateTime_OnNewUTCTime", "DateTimeValuesUTC = " .. currentUtcTime)
-  Script.notifyEvent("DateTime_OnNewDateTime", "DateTime = " .. dateTime)
+  Script.notifyEvent("DateTime_OnNewLocalTime", currentLocalTime)
+  Script.notifyEvent("DateTime_OnNewUTCTime", currentUtcTime)
+  Script.notifyEvent("DateTime_OnNewDateTime", dateTime)
 
   Script.notifyEvent("DateTime_OnNewTimezoneList", dateTime_Model.timezoneJsonList)
   Script.notifyEvent("DateTime_OnNewStatusTimezone", dateTime_Model.parameters.timezone)
@@ -274,9 +283,9 @@ Script.serveFunction('CSK_DateTime.manualNTPRequest', manualNTPRequest)
 
 local function setNTPServerIP(server)
   dateTime_Model.parameters.ntpServerIP= server
-  _G.logger:info(nameOfModule .. ": Preset NTP Server IP to " .. dateTime_Model.parameters.ntpServerIP)
+  _G.logger:fine(nameOfModule .. ": Preset NTP Server IP to " .. dateTime_Model.parameters.ntpServerIP)
   if dateTime_Model.parameters.systemTimeSource == 'NTP' then
-    _G.logger:info(nameOfModule .. ": Set NTP Server Address.")
+    _G.logger:fine(nameOfModule .. ": Set NTP Server Address.")
     dateTime_Model.ntpClient:setServerAddress(dateTime_Model.parameters.ntpServerIP)
   end
 end
@@ -284,9 +293,9 @@ Script.serveFunction('CSK_DateTime.setNTPServerIP', setNTPServerIP)
 
 local function setNTPServerPort(port)
   dateTime_Model.parameters.ntpServerPort= port
-  _G.logger:info(nameOfModule .. ": Preset NTP Server Port to " .. dateTime_Model.parameters.ntpServerPort)
+  _G.logger:fine(nameOfModule .. ": Preset NTP Server Port to " .. dateTime_Model.parameters.ntpServerPort)
   if dateTime_Model.parameters.systemTimeSource == 'NTP' then
-    _G.logger:info(nameOfModule .. ": Set NTP Server port.")
+    _G.logger:fine(nameOfModule .. ": Set NTP Server port.")
     dateTime_Model.ntpClient:setServerPort(dateTime_Model.parameters.ntpServerPort)
   end
 end
@@ -294,9 +303,9 @@ Script.serveFunction('CSK_DateTime.setNTPServerPort', setNTPServerPort)
 
 local function setNTPInterface(interface)
   dateTime_Model.parameters.interface= interface
-  _G.logger:info(nameOfModule .. ": Preset NTP interface to " .. dateTime_Model.parameters.interface)
+  _G.logger:fine(nameOfModule .. ": Preset NTP interface to " .. dateTime_Model.parameters.interface)
   if dateTime_Model.parameters.systemTimeSource == 'NTP' then
-    _G.logger:info(nameOfModule .. ": Set NTP interface.")
+    _G.logger:fine(nameOfModule .. ": Set NTP interface.")
     dateTime_Model.ntpClient:setInterface(dateTime_Model.parameters.interface)
   end
 end
@@ -305,7 +314,7 @@ Script.serveFunction('CSK_DateTime.setNTPInterface', setNTPInterface)
 local function setSystemTimeSource(source)
 
   if source == 'NTP' and _G.availableAPIs.specific then
-    _G.logger:info(nameOfModule .. ": Set system time source to 'NTP'")
+    _G.logger:fine(nameOfModule .. ": Set system time source to 'NTP'")
     dateTime_Model.parameters.systemTimeSource = 'NTP'
     dateTime_Model.ntpActive = true
     Script.notifyEvent("DateTime_OnNewStatusNTPActive", dateTime_Model.ntpActive)
@@ -319,7 +328,7 @@ local function setSystemTimeSource(source)
 
     dateTime_Model.ntpClient:setTimeSource(dateTime_Model.parameters.systemTimeSource)
 
-    _G.logger:info(nameOfModule .. ": Interface = " .. tostring(dateTime_Model.parameters.interface)
+    _G.logger:fine(nameOfModule .. ": Interface = " .. tostring(dateTime_Model.parameters.interface)
                 .. ", ServerIP = " .. tostring(dateTime_Model.parameters.ntpServerIP)
                 .. ", ServerPort = " .. tostring(dateTime_Model.parameters.ntpServerPort)
                 .. ", ApplyToSystemTime = " .. tostring(dateTime_Model.parameters.ntpApplyEnabled)
@@ -329,7 +338,7 @@ local function setSystemTimeSource(source)
     manualNTPRequest()
     tmrDateTime:start()
   elseif _G.availableAPIs.specific then
-    _G.logger:info(nameOfModule .. ": Set system time source to 'MANUAL'")
+    _G.logger:fine(nameOfModule .. ": Set system time source to 'MANUAL'")
     dateTime_Model.parameters.systemTimeSource = 'MANUAL'
     dateTime_Model.ntpActive = false
     dateTime_Model.ntpClient:setTimeSource(dateTime_Model.parameters.systemTimeSource)
@@ -343,9 +352,9 @@ Script.serveFunction('CSK_DateTime.setSystemTimeSource', setSystemTimeSource)
 
 local function setNTPApplyEnabled(status)
   dateTime_Model.parameters.ntpApplyEnabled= status
-  _G.logger:info(nameOfModule .. ": 'Preconfigure to apply NTP to system time: " .. tostring(status))
+  _G.logger:fine(nameOfModule .. ": 'Preconfigure to apply NTP to system time: " .. tostring(status))
   if dateTime_Model.parameters.systemTimeSource == 'NTP' then
-    _G.logger:info(nameOfModule .. ": Set status to apply NTP to system time to " .. tostring(status))
+    _G.logger:fine(nameOfModule .. ": Set status to apply NTP to system time to " .. tostring(status))
     dateTime_Model.ntpClient:setApplyEnabled(status)
   end
 end
@@ -353,9 +362,9 @@ Script.serveFunction('CSK_DateTime.setNTPApplyEnabled', setNTPApplyEnabled)
 
 local function setNTPPeriodicUpdate(status)
   dateTime_Model.parameters.ntpPeriodicUpdate= status
-  _G.logger:info(nameOfModule .. ": Preconfigure periodic update of NTP: " .. tostring(status))
+  _G.logger:fine(nameOfModule .. ": Preconfigure periodic update of NTP: " .. tostring(status))
   if dateTime_Model.parameters.systemTimeSource == 'NTP' then
-    _G.logger:info(nameOfModule .. ": Set periodic update of NTP to " .. tostring(status))
+    _G.logger:fine(nameOfModule .. ": Set periodic update of NTP to " .. tostring(status))
     dateTime_Model.ntpClient:setPeriodicUpdateEnabled(dateTime_Model.parameters.ntpPeriodicUpdate)
   end
 end
@@ -363,30 +372,42 @@ Script.serveFunction('CSK_DateTime.setNTPPeriodicUpdate', setNTPPeriodicUpdate)
 
 local function setNTPTimeout(timeout)
   dateTime_Model.parameters.ntpTimeout= timeout
-  _G.logger:info(nameOfModule .. ": Preset NTP timeout to " .. tostring(timeout))
+  _G.logger:fine(nameOfModule .. ": Preset NTP timeout to " .. tostring(timeout))
   if dateTime_Model.parameters.systemTimeSource == 'NTP' then
-    _G.logger:info(nameOfModule .. ": Set NTP timeout to " .. tostring(timeout))
+    _G.logger:fine(nameOfModule .. ": Set NTP timeout to " .. tostring(timeout))
     dateTime_Model.ntpClient:setTimeout(timeout)
   end
 end
 Script.serveFunction('CSK_DateTime.setNTPTimeout', setNTPTimeout)
+
+local function getStatusModuleActive()
+  return _G.availableAPIs.default
+end
+Script.serveFunction('CSK_DateTime.getStatusModuleActive', getStatusModuleActive)
+
+local function getParameters()
+  return dateTime_Model.helperFuncs.json.encode(dateTime_Model.parameters)
+end
+Script.serveFunction('CSK_DateTime.getParameters', getParameters)
 
 -- *****************************************************************
 -- Following function can be adapted for CSK_PersistentData module usage
 -- *****************************************************************
 
 local function setParameterName(name)
-  _G.logger:info(nameOfModule .. ": Set CSK_PersistentData parameter name to " .. name)
+  _G.logger:fine(nameOfModule .. ": Set CSK_PersistentData parameter name to " .. name)
   dateTime_Model.parametersName = name
 end
 Script.serveFunction("CSK_DateTime.setParameterName", setParameterName)
 
-local function sendParameters()
+local function sendParameters(noDataSave)
   if dateTime_Model.persistentModuleAvailable then
     CSK_PersistentData.addParameter(dateTime_Model.helperFuncs.convertTable2Container(dateTime_Model.parameters), dateTime_Model.parametersName)
     CSK_PersistentData.setModuleParameterName(nameOfModule, dateTime_Model.parametersName, dateTime_Model.parameterLoadOnReboot)
-    _G.logger:info(nameOfModule .. ": Send DateTime parameters with name '" .. dateTime_Model.parametersName .. "' to CSK_PersistentData module.")
-    CSK_PersistentData.saveData()
+    _G.logger:fine(nameOfModule .. ": Send DateTime parameters with name '" .. dateTime_Model.parametersName .. "' to CSK_PersistentData module.")
+    if not noDataSave then
+      CSK_PersistentData.saveData()
+    end
   else
     _G.logger:warning(nameOfModule .. ": CSK_PersistentData module not available.")
   end
@@ -407,43 +428,48 @@ local function loadParameters()
       end
       setSystemTimeSource(dateTime_Model.parameters.systemTimeSource)
       CSK_DateTime.pageCalled()
+      return true
     else
       _G.logger:warning(nameOfModule .. ": Loading parameters from CSK_PersistentData module did not work.")
+      return false
     end
   else
     _G.logger:warning(nameOfModule .. ": CSK_PersistentData module not available.")
+    return false
   end
 end
 Script.serveFunction("CSK_DateTime.loadParameters", loadParameters)
 
 local function setLoadOnReboot(status)
   dateTime_Model.parameterLoadOnReboot = status
-  _G.logger:info(nameOfModule .. ": Set new status to load setting on reboot: " .. tostring(status))
+  _G.logger:fine(nameOfModule .. ": Set new status to load setting on reboot: " .. tostring(status))
 end
 Script.serveFunction("CSK_DateTime.setLoadOnReboot", setLoadOnReboot)
 
 --- Function to react on initial load of persistent parameters
 local function handleOnInitialDataLoaded()
 
-  _G.logger:info(nameOfModule .. ': Try to initially load parameter from CSK_PersistentData module.')
-  if string.sub(CSK_PersistentData.getVersion(), 1, 1) == '1' then
+  if _G.availableAPIs.default then
+    _G.logger:fine(nameOfModule .. ': Try to initially load parameter from CSK_PersistentData module.')
+    if string.sub(CSK_PersistentData.getVersion(), 1, 1) == '1' then
 
-    _G.logger:warning(nameOfModule .. ': CSK_PersistentData module is too old and will not work. Please update CSK_PersistentData module.')
-    dateTime_Model.persistentModuleAvailable = false
-  else
+      _G.logger:warning(nameOfModule .. ': CSK_PersistentData module is too old and will not work. Please update CSK_PersistentData module.')
+      dateTime_Model.persistentModuleAvailable = false
+    else
 
-    _G.logger:info(nameOfModule .. ": Initially loading parameters from CSK_PersistentData module.")
-    local parameterName, loadOnReboot = CSK_PersistentData.getModuleParameterName(nameOfModule)
+      _G.logger:fine(nameOfModule .. ": Initially loading parameters from CSK_PersistentData module.")
+      local parameterName, loadOnReboot = CSK_PersistentData.getModuleParameterName(nameOfModule)
 
-    if parameterName then
-      dateTime_Model.parametersName = parameterName
-      dateTime_Model.parameterLoadOnReboot = loadOnReboot
+      if parameterName then
+        dateTime_Model.parametersName = parameterName
+        dateTime_Model.parameterLoadOnReboot = loadOnReboot
+      end
+
+      if dateTime_Model.parameterLoadOnReboot then
+        loadParameters()
+      end
+      Script.notifyEvent('DateTime_OnDataLoadedOnReboot')
     end
-
-    if dateTime_Model.parameterLoadOnReboot then
-      loadParameters()
-    end
-    Script.notifyEvent('DateTime_OnDataLoadedOnReboot')
   end
 end
 Script.register("CSK_PersistentData.OnInitialDataLoaded", handleOnInitialDataLoaded)

@@ -11,11 +11,13 @@ For further information regarding the internal used functions / events check out
 
 ## Information
 
-Tested on  
-|Device|Firmware|Module version
+Tested on:
+|Device|Firmware|Module version|
 |--|--|--|
-|SIM1012|V2.3.0|V3.1.0|
-|SICK AppEngine|V1.5.0|V3.1.0|
+|SICK AppEngine|V1.7.0|V3.2.0|
+|SIM1012|V2.4.2|V3.2.0|
+|SICK AppEngine|V1.5.0|<V3.2.0|
+|SIM1012|V2.3.0|<V3.2.0|
 
 This module is part of the SICK AppSpace Coding Starter Kit developing approach.  
 It is programmed in an object-oriented way. Some of the modules use kind of "classes" in Lua to make it possible to reuse code / classes in other projects.  

@@ -5,15 +5,17 @@
 
 local availableAPIs = {}
 
+-- Function to load all default APIs
 local function loadAPIs()
   CSK_DateTime = require 'API.CSK_DateTime'
+
+  Log = require 'API.Log'
+  Log.Handler = require 'API.Log.Handler'
+  Log.SharedLogger = require 'API.Log.SharedLogger'
 
   Container = require 'API.Container'
   DateTime = require 'API.DateTime'
   Engine = require 'API.Engine'
-  Log = require 'API.Log'
-  Log.Handler = require 'API.Log.Handler'
-  Log.SharedLogger = require 'API.Log.SharedLogger'
   Object = require 'API.Object'
   Timer = require 'API.Timer'
 
@@ -28,6 +30,7 @@ local function loadAPIs()
   end
 end
 
+-- Function to load specific APIs
 local function loadSpecificAPIs()
   NTPClient = require 'API.NTPClient'
 end
