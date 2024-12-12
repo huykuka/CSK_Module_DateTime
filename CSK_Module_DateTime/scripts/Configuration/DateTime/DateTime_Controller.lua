@@ -474,6 +474,13 @@ local function handleOnInitialDataLoaded()
 end
 Script.register("CSK_PersistentData.OnInitialDataLoaded", handleOnInitialDataLoaded)
 
+
+local function clearFlowConfigRelevantConfiguration()
+  --TODO
+end
+Script.serveFunction('CSK_DateTime.clearFlowConfigRelevantConfiguration', clearFlowConfigRelevantConfiguration)
+
+
 -- *************************************************
 -- END of functions for CSK_PersistentData module usage
 -- *************************************************

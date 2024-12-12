@@ -89,6 +89,7 @@ dateTime_Model.parameters.ntpPeriodicUpdate = true -- periodic update of NTP
 dateTime_Model.parameters.ntpTimeout = 1000 -- NTP timeout
 dateTime_Model.parameters.systemTimeSource = 'MANUAL'  -- time source for system time: 'NTP', 'MANUAL'
 
+
 --**************************************************************************
 --********************** End Global Scope **********************************
 --**************************************************************************

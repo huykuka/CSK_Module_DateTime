@@ -43,6 +43,7 @@ _G.logHandle:applyConfig()
 -- Loading script regarding DateTime_Model
 -- Check this script regarding DateTime_Model parameters and functions
 _G.dateTime_Model = require('Configuration/DateTime/DateTime_Model')
+require('Configuration.DateTime.FlowConfig.DateTime_FlowConfig')
 
 if _G.availableAPIs.default == false then
   _G.logger:warning("CSK_DateTime: Relevant CROWN(s) not available on device. Module is not supported...")
