@@ -1,5 +1,9 @@
 # Changelog
 All notable changes to this project will be documented in this file.
+## Release 3.2.1
+
+### New features
+- Add 'OnTimeSet' FlowConfig block to react on time is set event, whether via NPT or manual action
 
 ## Release 3.2.0
 
