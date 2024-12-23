@@ -250,39 +250,43 @@ If set to false the NTP time is just printed to the log.</desc>
                 </function>
                 <function name="clearFlowConfigRelevantConfiguration">
                     <trait>released</trait>
+                    <desc>Function to clear FlowConfig relevant configurations.</desc>
                 </function>
             </serves>
         </crown>
         <crown name="DateTime_FC">
             <trait>released</trait>
+            <desc>Crown to provide CSK_FlowConfig relevant features.</desc>
             <serves/>
             <crown name="OnTimeSet">
                 <trait>released</trait>
-                <desc>Event to notify the whether the datetime is set on the machine, it could be NTP or manual trigger </desc>
+                <desc>Notify whether the datetime is set on the machine (it could be NTP or manual trigger).</desc>
                 <serves>
                     <event name="OnTimeSet">
                         <trait>released</trait>
                         <include>data-flow</include>
-                        <desc>Event to notify the whether the datetime is set on the machine, it could be NTP or manual trigger </desc>
-                        <param desc="" multiplicity="1" name="handle" type="handle"/>
-                        <param desc="" multiplicity="1" name="OnTimeSet" type="string"/>
+                        <desc>Notify whether the datetime is set on the machine (it could be NTP or manual trigger).</desc>
+                        <param desc="Handle to internally used FlowConfig instance." multiplicity="1" name="handle" type="handle"/>
+                        <param desc="'CSK_DateTime.OnNewStatusIsTimeSet'&#10;&#10;Parameter:&#10;1: Status (BOOL)" multiplicity="1" name="OnTimeSet" type="string"/>
                     </event>
                     <function name="create">
                         <trait>released</trait>
-                        <return desc="" multiplicity="1" name="handle" type="handle"/>
+                        <desc>Internally used CSK_FlowConfig create function.</desc>
+                        <return desc="Handle to internally used FlowConfig instance." multiplicity="1" name="handle" type="handle"/>
                     </function>
                     <function name="register">
                         <trait>released</trait>
-                        <param desc="" multiplicity="1" name="handle" type="handle"/>
-                        <param desc="" multiplicity="1" name="eventname" type="string"/>
-                        <param desc="" multiplicity="1" name="callback" type="string"/>
-                        <return desc="" multiplicity="1" name="success" type="bool"/>
+                        <desc>Internally used CSK_FlowConfig register function.</desc>
+                        <param desc="Handle to internally used FlowConfig instance." multiplicity="1" name="handle" type="handle"/>
+                        <param desc="Internal parameter (not used)." multiplicity="1" name="eventname" type="string"/>
+                        <param desc="Internally used callback function." multiplicity="1" name="callback" type="string"/>
+                        <return desc="Success of register process." multiplicity="1" name="success" type="bool"/>
                     </function>
                 </serves>
             </crown>
         </crown>
         <meta key="author">SICK AG</meta>
-        <meta key="version">3.2.0</meta>
+        <meta key="version">3.3.0</meta>
         <meta key="priority">low</meta>
         <meta key="copy-protected">false</meta>
         <meta key="read-protected">false</meta>
