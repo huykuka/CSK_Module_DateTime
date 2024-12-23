@@ -1,9 +1,10 @@
 # Changelog
 All notable changes to this project will be documented in this file.
-## Release 3.2.1
+
+## Release 3.3.0
 
 ### New features
-- Add 'OnTimeSet' FlowConfig block to react on time is set event, whether via NPT or manual action
+- Add 'OnTimeSet' FlowConfig block to react on time is set event (CSK_DateTime.OnNewStatusIsTimeSet), whether via NTP or manual action
 
 ## Release 3.2.0
 

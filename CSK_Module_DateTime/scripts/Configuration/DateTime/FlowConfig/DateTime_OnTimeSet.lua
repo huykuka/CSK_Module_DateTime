@@ -11,7 +11,7 @@ local function register(handle, _ , callback)
 
   local function localCallback()
     if callback ~= nil then
-      Script.callFunction(callback, 'CSK_DateTime.OnNewStatusIsTimeSet') -- adapt this accordingly
+      Script.callFunction(callback, 'CSK_DateTime.OnNewStatusIsTimeSet')
     else
       _G.logger:warning(nameOfModule .. ": " .. BLOCK_NAMESPACE .. ".CB_Function missing!")
     end
